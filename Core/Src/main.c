@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define MPU6050_ADDR 0xD0
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -41,6 +41,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
 
@@ -49,6 +50,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 extern uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
 
@@ -89,10 +91,47 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   uint8_t buffer[] = "      \r\n";
   uint8_t hello[] = "hello\r\n";
   uint32_t delaytime = 0;
+
+  uint8_t result = 0x0;
+  HAL_I2C_Mem_Read (&hi2c1, MPU6050_ADDR, 0x75, 1, &result, 1, 100);
+  HAL_Delay (1000);
+
+  if (result == 0x68) {
+	  uint8_t send[] = "the device was found\r\n";
+	  CDC_Transmit_FS (send, sizeof(send));
+	  HAL_Delay (10);
+	  uint8_t data;
+	  data = 0x00;
+	  HAL_I2C_Mem_Write (&hi2c1, MPU6050_ADDR, 0x6B, 1, &data, 1, 500); //initialize mpu clock
+	  data = 0x07;
+	  HAL_I2C_Mem_Write (&hi2c1, MPU6050_ADDR, 0x19, 1, &data, 1, 500); //measurement poll rate of 1 khz
+	  data = 0b00001000;
+	  HAL_I2C_Mem_Write (&hi2c1, MPU6050_ADDR, 0x1C, 1, &data, 1, 500); //accel set to [-4g, 4g]
+	  data = 0x00;
+	  HAL_I2C_Mem_Write (&hi2c1, MPU6050_ADDR, 0x1B, 1, &data, 1, 500); //gyro set to [-250degree/sec, 250degree/sec]
+  } else {
+	  uint8_t send[12] = "          \r\n";
+	  itoa(result, (char*)send, 10);
+	  HAL_Delay (10);
+	  CDC_Transmit_FS (send, sizeof(send));
+	  HAL_Delay (10);
+	  uint8_t errormessage[] = "there was an error\r\n";
+	  CDC_Transmit_FS (errormessage, sizeof(errormessage));
+	  HAL_Delay (10);
+  }
+
+
+
+
+
+  uint8_t movingon[] = "moving on...\r\n";
+  CDC_Transmit_FS (movingon, sizeof(movingon));
+  HAL_Delay (10);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,18 +141,31 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
-	  HAL_Delay (100 + delaytime);
-	  delaytime += 10;
+	  //HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
 
-	  uint32_t placevaluehold = delaytime;
-	  for (int i = 0; i < 6; i++) {
-		  buffer[5 - i] = (uint8_t)((placevaluehold % 10) + 48);
-		  placevaluehold /= 10;
+	  uint8_t acceldata[] = {0, 0, 0, 0, 0, 0};
+	  HAL_I2C_Mem_Read (&hi2c1, MPU6050_ADDR, 0x3B, 1, acceldata, 6, 1000);
+	  HAL_Delay(100);
+	  if ((acceldata[2] == 0) && (acceldata[3] == 0)) {
+		  uint8_t erroraccel[] = "error getting data\r\n";
+		  CDC_Transmit_FS (erroraccel, sizeof(erroraccel));
 	  }
-	  CDC_Transmit_FS(hello, sizeof(hello));
-	  HAL_Delay (1); // a short delay is needed before sending new println's
-	  CDC_Transmit_FS(buffer, sizeof(buffer));
+	  int16_t rawx = (uint16_t)(acceldata[0] << 8 | acceldata[1]);
+	  int16_t rawy = (uint16_t)(acceldata[2] << 8 | acceldata[3]);
+	  int16_t rawz = (uint16_t)(acceldata[4] << 8 | acceldata[5]);
+	  HAL_Delay(50);
+	  uint8_t bufferx[] = "        : x\r\n";
+	  uint8_t buffery[] = "        : y\r\n";
+	  uint8_t bufferz[] = "        : z\r\n\r\n";
+	  itoa(rawx, (char*)bufferx, 10);
+	  itoa(rawy, (char*)buffery, 10);
+	  itoa(rawz, (char*)bufferz, 10);
+	  CDC_Transmit_FS (bufferx, sizeof(bufferx));
+	  HAL_Delay(2);
+	  CDC_Transmit_FS (buffery, sizeof(buffery));
+	  HAL_Delay(2);
+	  CDC_Transmit_FS (bufferz, sizeof(bufferz));
+	  HAL_Delay(2);
 
   }
   /* USER CODE END 3 */
@@ -165,6 +217,40 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -179,6 +265,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LEDLight_GPIO_Port, LEDLight_Pin, GPIO_PIN_RESET);
