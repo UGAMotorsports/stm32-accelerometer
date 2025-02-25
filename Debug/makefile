@@ -14,7 +14,6 @@ RM := rm -rf
 -include Middlewares/USB_Device_Library/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/subdir.mk
 -include Core/Startup/subdir.mk
--include Core/Src/stm32-hal-mcp2515/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 

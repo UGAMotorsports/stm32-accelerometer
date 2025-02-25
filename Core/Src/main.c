@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
-#include "spi.h"
 #include "usb_device.h"
 #include "gpio.h"
 
@@ -91,8 +90,6 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C1_Init();
-  MX_SPI1_Init();
-  MX_SPI2_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
@@ -124,7 +121,6 @@ int main(void)
 	  HAL_Delay (10);
   }
 
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -134,8 +130,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
-	  HAL_Delay (150);
+	  //HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
+	  //HAL_Delay (150);
 
 	  uint8_t acceldata[] = {0, 0, 0, 0, 0, 0};
 	  HAL_I2C_Mem_Read (&hi2c1, MPU6050_ADDR, 0x3B, 1, acceldata, 6, 1000);

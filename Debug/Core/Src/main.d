@@ -26,17 +26,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
- ../Core/Inc/i2c.h ../Core/Inc/main.h ../Core/Inc/spi.h \
- ../USB_DEVICE/App/usb_device.h \
+ ../Core/Inc/i2c.h ../Core/Inc/main.h ../USB_DEVICE/App/usb_device.h \
  C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/gpio.h \
- C:/Users/bharg/STM32CubeIDE/workspace_1.17.0/stm-accelerometer/Core/Src/stm32-hal-mcp2515/mcp2515.h \
- ../Core/Inc/SPI.h \
- C:/Users/bharg/STM32CubeIDE/workspace_1.17.0/stm-accelerometer/Core/Src/stm32-hal-mcp2515/CAN.h
+ ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/gpio.h
 ../Core/Inc/main.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -65,17 +60,12 @@ C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HA
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
-C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h:
 ../Core/Inc/i2c.h:
 ../Core/Inc/main.h:
-../Core/Inc/spi.h:
 ../USB_DEVICE/App/usb_device.h:
 C:/Users/bharg/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.1/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
 ../USB_DEVICE/Target/usbd_conf.h:
 ../Core/Inc/gpio.h:
-C:/Users/bharg/STM32CubeIDE/workspace_1.17.0/stm-accelerometer/Core/Src/stm32-hal-mcp2515/mcp2515.h:
-../Core/Inc/SPI.h:
-C:/Users/bharg/STM32CubeIDE/workspace_1.17.0/stm-accelerometer/Core/Src/stm32-hal-mcp2515/CAN.h:
